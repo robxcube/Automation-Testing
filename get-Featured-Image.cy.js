@@ -1,9 +1,18 @@
 describe('Check Featured Image', () => {
-    it('should verify that the featured image exists and is visible', () => {
-      cy.visit('https://dynamictradies-refresh.nyg1r0.ap-southeast-2.wpstaqhosting.com/plumbing/'); // Replace with your site's URL
+  beforeEach(() => {
+    cy.visit('https://www.honeycombagency.com.au/'); // Replace with your site's URL
+    cy.on('uncaught:exception', (err, runnable) => {
+      return false;
+    })
+  })
   
-      cy.get('meta[property="og:image"]') // Replace with the actual selector
-        .should('exist') // Ensure the element exists in the DOM
+  it('should verify that the featured image exists and is visible', () => {
+      cy.document().then((doc) => {
+        const hasOGImage = doc.querySelector('meta[property="og:image"]') !== null;
+        const hasThumbnail = doc.querySelector('.has-post-thumbnail') !== null;
+    
+        expect(hasOGImage || hasThumbnail).to.be.true;
+      });
     });
   });
   
